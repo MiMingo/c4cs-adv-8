@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import operator
+import readline
+import logging
+import sys
 
 operators = {
     '+': operator.add,
@@ -18,6 +21,8 @@ def calculate(myarg):
             stack.append(token)
         except ValueError:
             try:
+                if token == 'exit':
+                    exit()
                 function = operators[token]
                 arg2 = stack.pop()
                 arg1 = stack.pop()
@@ -26,7 +31,7 @@ def calculate(myarg):
             except ZeroDivisionError:
                 print('Cannot divide by zero!')
                 stack.append('NaN')
-        print(stack)
+        logging.debug(stack)
     if len(stack) != 1:
         raise TypeError("Too many parameters")
     return stack.pop()
@@ -37,4 +42,9 @@ def main():
         print("Result: ", result)
 
 if __name__ == '__main__':
+    if len(sys.argv) == 2 and sys.argv[1] == '--debug':
+        logMode = logging.DEBUG
+    else:
+        logMode = logging.WARNING
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logMode)
     main()
