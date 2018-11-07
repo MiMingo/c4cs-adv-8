@@ -17,3 +17,8 @@ class TestBasics(unittest.TestCase):
     def test_exponent(self):
         result = rpn.calculate("2 0 ^")
         self.assertEqual(1, result)
+    def test_raise_type(self):
+        self.assertRaises(TypeError, rpn.calculate, "1 2 3 +")
+
+if __name__ == '__main__':
+    unittest.main()
